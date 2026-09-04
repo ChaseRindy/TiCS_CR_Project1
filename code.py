@@ -34,7 +34,7 @@ while playing:
 
         takeFlashlight = input("Do you take the flashlight? (yes/no): ")
 
-        if takeFlashlight == "yes":
+        if takeFlashlight.lower() == "yes":
             hasFlashlight = True
             items.append("flashlight")
             print("You take the flashlight.")
@@ -52,8 +52,8 @@ while playing:
                 items.append("key")
                 print("You take the key.")
             else:
-                print("It is completely dark. You can't see anything.")
-                print("You decide to go back upstairs.")
+                print("It is completely dark.")
+                print("You can't see anything, so you go back upstairs.")
 
         elif choice2.lower() == "upstairs":
             print("\nYou walk upstairs.")
@@ -61,13 +61,31 @@ while playing:
 
             radio = input("Do you try to turn on the radio? (yes/no): ")
 
-            if radio == "yes":
-                print("You turn the radio on.")
-                print("You hear a weak signal from somewhere nearby.")
-                print("It sounds like someone is looking for hikers.")
+            if radio.lower() == "yes":
+                print("\nYou turn on the radio.")
+                print("After a few seconds, you hear someone talking.")
+                print("It sounds like a rescue team searching for hikers.")
+
+                response = input("Do you respond to the radio? (yes/no): ")
+
+                if response.lower() == "yes":
+                    print("\nYou tell the rescue team where you are.")
+                    print("They tell you to stay inside the cabin and wait.")
+                    print("A few hours later, you hear a vehicle outside.")
+                    print("The rescue team has found you!")
+
+                    print(f"\nYou were rescued safely, {name}!")
+                    print("You are finally able to make it home.")
+                    playing = False
+
+                else:
+                    print("\nYou decide not to respond.")
+                    print("The radio signal disappears.")
+                    print("You may have missed your chance to get rescued.")
 
             else:
-                print("You leave the radio alone.")
+                print("\nYou leave the radio alone.")
+                print("You decide to keep exploring.")
 
         else:
             print("You don't know where that is, so you go back downstairs.")
@@ -88,12 +106,12 @@ while playing:
 
         enter = input("Do you enter the cabin? (yes/no): ")
 
-        if enter == "yes":
-            print("You enter the cabin and find an old flashlight on a table.")
+        if enter.lower() == "yes":
+            print("\nYou enter the cabin and find an old flashlight on a table.")
 
             takeFlashlight = input("Do you take it? (yes/no): ")
 
-            if takeFlashlight == "yes":
+            if takeFlashlight.lower() == "yes":
                 hasFlashlight = True
                 items.append("flashlight")
                 print("You take the flashlight.")
@@ -107,22 +125,29 @@ while playing:
     else:
         print("Invalid choice. Try again.")
 
-    if "key" in items:
+    if playing and "key" in items:
         print("\nYou notice a locked door at the back of the cabin.")
         print("You use the key you found and unlock it.")
         print("Behind the door is a trail leading back toward town.")
-        print("\nYou escaped the woods safely!")
-        print(f"Congratulations, {name}!")
-        playing = False
+        
+        escape = input("\nDo you use the trail and leave the woods? (yes/no): ")
 
-    elif health <= 0:
+        if escape.lower() == "yes":
+            print("\nYou follow the trail back toward town.")
+            print("After a long walk, you finally reach civilization.")
+            print(f"\nYou escaped the woods safely, {name}!")
+            playing = False
+        else:
+            print("\nYou decide to stay at the cabin for now.")
+
+    elif playing and health <= 0:
         print("\nYou are too tired to continue.")
         print("You decide to stay at the cabin and wait for help.")
         print("The next morning, a rescue team finds you.")
-        print("\nYou survived, but you probably should have stayed on the trail.")
+        print(f"\nYou survived, {name}, but it was a close call.")
         playing = False
 
-    else:
+    elif playing:
         print("\nCurrent items:")
         showItems()
 
@@ -131,7 +156,7 @@ while playing:
         if finalChoice.lower() == "leave":
             print("\nYou leave the cabin and try to find your way through the woods.")
             print("After walking for a while, you realize you are completely lost.")
-            print("\nYou should have stayed in the cabin.")
+            print("\nYou should have stayed at the cabin.")
             playing = False
 
         elif finalChoice.lower() == "explore":
