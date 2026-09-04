@@ -80,6 +80,9 @@ while playing:
             print("You use your flashlight to see through the darkness.")
         else:
             print("It is getting hard to see because it is almost dark.")
+            print("You have trouble searching without a flashlight.")
+            health = health - 5
+            print("You lose 5 health from struggling in the dark.")
 
         print("\nWhat do you search for?")
         print("1. Food")
@@ -88,11 +91,14 @@ while playing:
         searchChoice = input("Choose 1 or 2: ")
 
         if searchChoice == "1":
-            print("\nYou search around the cabin for food.")
-            food = food + 1
-            health = health - 5
-            print("You find some canned food.")
-            print("You lose 5 health from being outside in the cold.")
+            if food < 4:
+                print("\nYou search around the cabin for food.")
+                food = food + 1
+                health = health - 5
+                print("You find some canned food.")
+                print("You lose 5 health from being outside in the cold.")
+            else:
+                print("\nYou search around but don't find any more food.")
 
         elif searchChoice == "2":
             print("\nYou collect some dry branches from around the cabin.")
@@ -151,6 +157,8 @@ while playing:
             firewood = firewood - 1
             print("You start a fire in the fireplace.")
             print("The cabin begins to warm up.")
+    elif fireStarted:
+        print("\nThe fire is still burning and keeping the cabin warm.")
 
     if hasRadio and hours >= 9:
         print("\nYou remember the radio you found upstairs.")
@@ -179,22 +187,21 @@ while playing:
         print("\nThe sun begins to rise.")
         print("You look outside and see the woods clearly again.")
 
-        if health >= 70 and fireStarted:
+        if health >= 70 and fireStarted and food >= 1:
             print("\nYou made it through the night safely.")
-            print("The fire kept you warm, and you had enough food to stay healthy.")
+            print("You kept the cabin warm and saved enough food to stay healthy.")
             print(f"\nENDING: You survived the night, {name}!")
-            playing = False
 
-        elif health >= 40:
-            print("\nYou are tired and cold, but you made it through the night.")
+        elif health >= 40 and (fireStarted or food >= 1):
+            print("\nYou are tired and cold, but you prepared enough to make it through.")
             print("You leave the cabin and begin looking for the trail back home.")
             print(f"\nENDING: You survived, {name}, but it was a rough night.")
-            playing = False
 
         else:
             print("\nYou barely made it through the night.")
             print("You decide to stay in the cabin and wait for a rescue team.")
             print(f"\nENDING: You survived, but barely, {name}.")
-            playing = False
+
+        playing = False
 
 print("\nThanks for playing!")
