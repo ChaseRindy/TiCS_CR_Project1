@@ -4,166 +4,197 @@ name = input("What is your name? ")
 
 health = 100
 temperature = 15.5
+food = 2
+firewood = 0
 hasFlashlight = False
+hasRadio = False
+fireStarted = False
+hours = 6
 items = []
 
 print(f"\nHello, {name}!")
-print("You are hiking through the woods when it starts getting dark.")
-print("You see an old cabin a little ways off the trail.")
+print("You are hiking through the woods when you realize you are lost.")
+print("It is getting dark, and the temperature is dropping.")
+print("Luckily, you find an old cabin that looks like it has been abandoned.")
 
 def showItems():
+    print("\nItems:")
     if len(items) == 0:
         print("You don't have any items.")
     else:
-        print("You have:")
         for item in items:
             print("-", item)
 
 playing = True
 
 while playing:
-    print("\nWhat do you want to do?")
-    print("1. Enter the cabin")
-    print("2. Search around outside")
 
-    choice = input("Enter 1 or 2: ")
+    print(f"\nIt is {hours}:00 PM.")
+    print(f"Temperature: {temperature} degrees")
+    print(f"Health: {health}")
+    print(f"Food: {food}")
+    print(f"Firewood: {firewood}")
+
+    print("\nWhat do you want to do?")
+    print("1. Search the cabin")
+    print("2. Search outside")
+    print("3. Rest")
+    print("4. Check your items")
+
+    choice = input("Choose an action: ")
 
     if choice == "1":
-        print("\nYou enter the old cabin.")
-        print("It is dark and dusty. You find an old flashlight on a table.")
+        print("\nYou search through the cabin.")
 
-        takeFlashlight = input("Do you take the flashlight? (yes/no): ")
+        if not hasFlashlight:
+            print("You find an old flashlight on a table.")
+            take = input("Do you take it? (yes/no): ")
 
-        if takeFlashlight.lower() == "yes":
-            hasFlashlight = True
-            items.append("flashlight")
-            print("You take the flashlight.")
-
-        print("\nYou see a staircase going upstairs and a door leading to the basement.")
-
-        choice2 = input("Do you go upstairs or to the basement? ")
-
-        if choice2.lower() == "basement":
-            print("\nYou walk down the stairs into the basement.")
-
-            if hasFlashlight:
-                print("You turn on the flashlight and can see everything.")
-                print("You find an old key sitting on a shelf.")
-                items.append("key")
-                print("You take the key.")
-            else:
-                print("It is completely dark.")
-                print("You can't see anything, so you go back upstairs.")
-
-        elif choice2.lower() == "upstairs":
-            print("\nYou walk upstairs.")
-            print("There is an old radio sitting on a desk.")
-
-            radio = input("Do you try to turn on the radio? (yes/no): ")
-
-            if radio.lower() == "yes":
-                print("\nYou turn on the radio.")
-                print("After a few seconds, you hear someone talking.")
-                print("It sounds like a rescue team searching for hikers.")
-
-                response = input("Do you respond to the radio? (yes/no): ")
-
-                if response.lower() == "yes":
-                    print("\nYou tell the rescue team where you are.")
-                    print("They tell you to stay inside the cabin and wait.")
-                    print("A few hours later, you hear a vehicle outside.")
-                    print("The rescue team has found you!")
-
-                    print(f"\nYou were rescued safely, {name}!")
-                    print("You are finally able to make it home.")
-                    playing = False
-
-                else:
-                    print("\nYou decide not to respond.")
-                    print("The radio signal disappears.")
-                    print("You may have missed your chance to get rescued.")
-
-            else:
-                print("\nYou leave the radio alone.")
-                print("You decide to keep exploring.")
-
-        else:
-            print("You don't know where that is, so you go back downstairs.")
-
-    elif choice == "2":
-        print("\nYou search around the outside of the cabin.")
-        print("You find some food underneath an old wooden box.")
-        items.append("food")
-        print("You put the food in your backpack.")
-
-        temperature = temperature - 2
-        health = health - 5
-
-        print(f"The temperature drops to {temperature} degrees.")
-        print(f"Your health is now {health}.")
-
-        print("It is getting darker, so you decide to enter the cabin.")
-
-        enter = input("Do you enter the cabin? (yes/no): ")
-
-        if enter.lower() == "yes":
-            print("\nYou enter the cabin and find an old flashlight on a table.")
-
-            takeFlashlight = input("Do you take it? (yes/no): ")
-
-            if takeFlashlight.lower() == "yes":
+            if take.lower() == "yes":
                 hasFlashlight = True
                 items.append("flashlight")
-                print("You take the flashlight.")
+                print("You put the flashlight in your backpack.")
+            else:
+                print("You leave the flashlight behind.")
 
         else:
-            print("\nYou decide to stay outside.")
-            print("The temperature keeps dropping.")
-            health = health - 20
-            print(f"Your health is now {health}.")
+            print("You search through some old cabinets.")
+            print("You don't find anything useful.")
+
+        if not hasRadio:
+            findRadio = input("\nDo you search upstairs? (yes/no): ")
+
+            if findRadio.lower() == "yes":
+                print("\nYou walk upstairs and find an old radio.")
+                takeRadio = input("Do you take the radio? (yes/no): ")
+
+                if takeRadio.lower() == "yes":
+                    hasRadio = True
+                    items.append("radio")
+                    print("You take the radio.")
+
+    elif choice == "2":
+        print("\nYou go outside to search around the cabin.")
+
+        if hasFlashlight:
+            print("You use your flashlight to see through the darkness.")
+        else:
+            print("It is getting hard to see because it is almost dark.")
+
+        print("\nWhat do you search for?")
+        print("1. Food")
+        print("2. Firewood")
+
+        searchChoice = input("Choose 1 or 2: ")
+
+        if searchChoice == "1":
+            print("\nYou search around the cabin for food.")
+            food = food + 1
+            health = health - 5
+            print("You find some canned food.")
+            print("You lose 5 health from being outside in the cold.")
+
+        elif searchChoice == "2":
+            print("\nYou collect some dry branches from around the cabin.")
+            firewood = firewood + 2
+            health = health - 5
+            print("You collect 2 pieces of firewood.")
+            print("You lose 5 health from being outside in the cold.")
+
+        else:
+            print("You don't know what to search for.")
+
+    elif choice == "3":
+        print("\nYou sit down and rest for a while.")
+
+        if food > 0:
+            eat = input("Do you eat some food while you rest? (yes/no): ")
+
+            if eat.lower() == "yes":
+                food = food - 1
+                health = health + 10
+
+                if health > 100:
+                    health = 100
+
+                print("You eat some food and recover 10 health.")
+            else:
+                print("You decide not to eat yet.")
+
+        else:
+            print("You don't have any food left.")
+
+    elif choice == "4":
+        showItems()
 
     else:
         print("Invalid choice. Try again.")
+        continue
 
-    if playing and "key" in items:
-        print("\nYou notice a locked door at the back of the cabin.")
-        print("You use the key you found and unlock it.")
-        print("Behind the door is a trail leading back toward town.")
-        
-        escape = input("\nDo you use the trail and leave the woods? (yes/no): ")
+    hours = hours + 1
 
-        if escape.lower() == "yes":
-            print("\nYou follow the trail back toward town.")
-            print("After a long walk, you finally reach civilization.")
-            print(f"\nYou escaped the woods safely, {name}!")
+    if not fireStarted:
+        temperature = temperature - 2
+    else:
+        temperature = temperature + 1
+
+    if temperature < 5:
+        health = health - 10
+        print("\nThe cabin is getting very cold.")
+        print("You lose 10 health.")
+
+    if firewood > 0 and not fireStarted:
+        startFire = input("\nYou have firewood. Do you start a fire? (yes/no): ")
+
+        if startFire.lower() == "yes":
+            fireStarted = True
+            firewood = firewood - 1
+            print("You start a fire in the fireplace.")
+            print("The cabin begins to warm up.")
+
+    if hasRadio and hours >= 9:
+        print("\nYou remember the radio you found upstairs.")
+
+        useRadio = input("Do you try to contact someone? (yes/no): ")
+
+        if useRadio.lower() == "yes":
+            print("\nYou turn on the radio.")
+            print("After a few seconds, someone answers.")
+            print("It is a rescue team searching the area.")
+
+            print("You give them your location.")
+            print("They tell you to stay inside the cabin.")
+
+            print("\nA few hours later, the rescue team arrives.")
+            print(f"\nYou were rescued safely, {name}!")
             playing = False
-        else:
-            print("\nYou decide to stay at the cabin for now.")
 
-    elif playing and health <= 0:
-        print("\nYou are too tired to continue.")
-        print("You decide to stay at the cabin and wait for help.")
-        print("The next morning, a rescue team finds you.")
-        print(f"\nYou survived, {name}, but it was a close call.")
+    if health <= 0:
+        print("\nYou are too exhausted and cold to continue.")
+        print("You spend the night in the cabin, but you are unable to stay warm.")
+        print("\nENDING: You did not survive the night.")
         playing = False
 
-    elif playing:
-        print("\nCurrent items:")
-        showItems()
+    elif hours >= 12:
+        print("\nThe sun begins to rise.")
+        print("You look outside and see the woods clearly again.")
 
-        finalChoice = input("\nDo you want to keep exploring or leave the cabin? ")
-
-        if finalChoice.lower() == "leave":
-            print("\nYou leave the cabin and try to find your way through the woods.")
-            print("After walking for a while, you realize you are completely lost.")
-            print("\nYou should have stayed at the cabin.")
+        if health >= 70 and fireStarted:
+            print("\nYou made it through the night safely.")
+            print("The fire kept you warm, and you had enough food to stay healthy.")
+            print(f"\nENDING: You survived the night, {name}!")
             playing = False
 
-        elif finalChoice.lower() == "explore":
-            print("\nYou decide to keep exploring the cabin.")
-            print("You hear something outside and decide to look around.")
+        elif health >= 40:
+            print("\nYou are tired and cold, but you made it through the night.")
+            print("You leave the cabin and begin looking for the trail back home.")
+            print(f"\nENDING: You survived, {name}, but it was a rough night.")
+            playing = False
 
         else:
-            print("You aren't sure what to do, so you stay inside.")
+            print("\nYou barely made it through the night.")
+            print("You decide to stay in the cabin and wait for a rescue team.")
+            print(f"\nENDING: You survived, but barely, {name}.")
+            playing = False
 
 print("\nThanks for playing!")
